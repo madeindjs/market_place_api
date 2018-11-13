@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  before { @user = FactoryGirl.build(:user) }
+  before { @user = FactoryBot.build(:user) }
 
   subject { @user }
 
