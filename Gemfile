@@ -38,6 +38,7 @@ group :test do
   gem "factory_bot_rails"
   gem 'ffaker', '~> 2.10'
   gem 'rspec-rails', '~> 3.8'
+  gem 'shoulda-matchers'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
