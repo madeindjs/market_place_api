@@ -34,9 +34,14 @@ RSpec.configure do |config|
     include_default_accept_headers
   end
 
-  RSpec.configure do |config|
-    config.include(Shoulda::Matchers::ActiveModel, type: :model)
-    config.include(Shoulda::Matchers::ActiveRecord, type: :model)
+  config.include(Shoulda::Matchers::ActiveModel, type: :model)
+  config.include(Shoulda::Matchers::ActiveRecord, type: :model)
+
+  # config.expect_with :rspec do |expectations|
+  #   expectations.syntax = :should
+  # end
+  config.mock_with :rspec do |mocks|
+    mocks.syntax = :should
   end
 
   # RSpec Rails can automatically mix in different behaviours to your tests
