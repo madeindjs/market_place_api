@@ -4,8 +4,6 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::UsersController, type: :controller do
-  before(:each) { request.headers['Accept'] = "application/vnd.marketplace.v1, application/json" }
-  before(:each) { request.headers['Content-Type'] = 'application/json' }
 
   describe 'GET #show' do
     before(:each) do
