@@ -1,10 +1,10 @@
 # frozen_string_literal: true
+
 # spec/controllers/api/v1/users_controller_spec.rb
 
 require 'rails_helper'
 
 RSpec.describe Api::V1::UsersController, type: :controller do
-
   describe 'GET #show' do
     before(:each) do
       @user = FactoryBot.create :user
@@ -52,56 +52,51 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         expect(user_response[:errors][:email]).to include "can't be blank"
       end
 
-      it {  expect(response.response_code).to eq(422) }
+      it { expect(response.response_code).to eq(422) }
     end
   end
 
+  describe 'PUT/PATCH #update' do
+    context 'when is successfully updated' do
+      before(:each) do
+        @user = FactoryBot.create :user
+        api_authorization_header @user.auth_token
+        patch :update, params: { id: @user.id, user: { email: 'newmail@example.com' } }, format: :json
+      end
 
-  describe "PUT/PATCH #update" do
+      it 'renders the json representation for the updated user' do
+        user_response = json_response
+        expect(user_response[:email]).to eql 'newmail@example.com'
+      end
 
-   context "when is successfully updated" do
-     before(:each) do
-       @user = FactoryBot.create :user
-       patch :update, params: {
-         id: @user.id,
-         user: { email: "newmail@example.com" } },
-         format: :json
-     end
+      it { expect(response.response_code).to eq(200) }
+    end
 
-     it "renders the json representation for the updated user" do
-       user_response = json_response
-       expect(user_response[:email]).to eql "newmail@example.com"
-     end
+    context 'when is not created' do
+      before(:each) do
+        @user = FactoryBot.create :user
+        api_authorization_header @user.auth_token
+        patch :update, params: { id: @user.id, user: { email: 'bademail.com' } }, format: :json
+      end
 
-     it {  expect(response.response_code).to eq(200) }
-   end
+      it 'renders an errors json' do
+        user_response = json_response
+        expect(user_response).to have_key(:errors)
+      end
 
-   context "when is not created" do
-     before(:each) do
-       @user = FactoryBot.create :user
-       patch :update, params: {
-         id: @user.id,
-         user: { email: "bademail.com" } },
-         format: :json
-     end
+      it 'renders the json errors on whye the user could not be created' do
+        user_response = json_response
+        expect(user_response[:errors][:email]).to include 'is invalid'
+      end
 
-     it "renders an errors json" do
-       user_response = json_response
-       expect(user_response).to have_key(:errors)
-     end
-
-     it "renders the json errors on whye the user could not be created" do
-       user_response = json_response
-       expect(user_response[:errors][:email]).to include "is invalid"
-     end
-
-     it {  expect(response.response_code).to eq(422) }
-   end
+      it { expect(response.response_code).to eq(422) }
+    end
   end
 
-  describe "DELETE #destroy" do
+  describe 'DELETE #destroy' do
     before(:each) do
       @user = FactoryBot.create :user
+      api_authorization_header @user.auth_token
       delete :destroy, params: { id: @user.id }
     end
 

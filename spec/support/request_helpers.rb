@@ -13,7 +13,7 @@ module Request
       request.headers['Accept'] = "application/vnd.marketplace.v#{version}"
     end
 
-    def api_response_format(format ='application/json')
+    def api_response_format(format = 'application/json')
       request.headers['Accept'] = "#{request.headers['Accept']}, #{format}"
       request.headers['Content-Type'] = format
     end
@@ -21,6 +21,10 @@ module Request
     def include_default_accept_headers
       api_header
       api_response_format
+    end
+
+    def api_authorization_header(token)
+      request.headers['Authorization'] = token
     end
   end
 end
