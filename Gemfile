@@ -35,8 +35,9 @@ group :development do
 end
 
 group :test do
-  gem "factory_bot_rails"
+  gem 'factory_bot_rails'
   gem 'ffaker', '~> 2.10'
+  gem 'rspec-collection_matchers', '~> 1.1'
   gem 'rspec-rails', '~> 3.8'
   gem 'shoulda-matchers'
 end
