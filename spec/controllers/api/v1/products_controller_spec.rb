@@ -14,6 +14,10 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
     end
 
     it { expect(response.response_code).to eq(200) }
+
+    it 'has the user as a embeded object' do
+      expect(json_response[:user][:email]).to eql @product.user.email
+    end
   end
 
   describe 'GET #index' do
@@ -24,10 +28,16 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
 
     it 'returns 4 records from the database' do
       products_response = json_response
-      expect(products_response[:products]).to have(4).items
+      expect(products_response).to have(4).items
     end
 
     it { expect(response.response_code).to eq(200) }
+
+    it 'returns the user object into each product' do
+      json_response.each do |product_response|
+        expect(product_response[:user]).to be_present
+      end
+    end
   end
 
   describe 'POST #create' do
