@@ -9,8 +9,7 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
     end
 
     it 'returns the information about a reporter on a hash' do
-      product_response = json_response
-      expect(product_response[:title]).to eql @product.title
+      expect(json_response[:title]).to eql @product.title
     end
 
     it { expect(response.response_code).to eq(200) }
@@ -26,16 +25,35 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
       get :index
     end
 
-    it 'returns 4 records from the database' do
-      products_response = json_response
-      expect(products_response).to have(4).items
+    context 'when is not receiving any product_ids parameter' do
+      before(:each) do
+        get :index
+      end
+
+      it 'returns 4 records from the database' do
+        expect(json_response).to have(4).items
+      end
+
+      it 'returns the user object into each product' do
+        json_response.each do |product_response|
+          expect(product_response[:user]).to be_present
+        end
+      end
+
+      it { expect(response.response_code).to eq(200) }
     end
 
-    it { expect(response.response_code).to eq(200) }
+    context 'when product_ids parameter is sent' do
+      before(:each) do
+        @user = FactoryBot.create :user
+        3.times { FactoryBot.create :product, user: @user }
+        get :index, params: { product_ids: @user.product_ids }
+      end
 
-    it 'returns the user object into each product' do
-      json_response.each do |product_response|
-        expect(product_response[:user]).to be_present
+      it 'returns just the products that belong to the user' do
+        json_response.each do |product_response|
+          expect(product_response[:user][:email]).to eql @user.email
+        end
       end
     end
   end

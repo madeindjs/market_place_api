@@ -3,7 +3,8 @@ class Api::V1::ProductsController < ApplicationController
   before_action :authenticate_with_token!, only: %i[create update destroy]
 
   def index
-    render json: Product.all
+    products = params[:product_ids].present? ? Product.find(params[:product_ids]) : Product.all
+    render json: products
   end
 
   def show
