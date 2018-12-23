@@ -1,6 +1,7 @@
 # app/models/user.rb
 class User < ApplicationRecord
   has_many :products, dependent: :destroy
+  has_many :orders, dependent: :destroy
 
   validates :auth_token, uniqueness: true
   before_create :generate_authentication_token!
