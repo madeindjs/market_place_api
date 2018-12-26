@@ -40,6 +40,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'email_spec'
   gem 'rspec-collection_matchers', '~> 1.1'
   gem 'rspec-rails', '~> 3.8'
   gem 'shoulda-matchers'
