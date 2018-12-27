@@ -5,5 +5,6 @@ FactoryBot.define do
     price { rand * 100 }
     published { false }
     user
+    quantity { 5 }
   end
 end
