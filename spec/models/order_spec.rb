@@ -17,13 +17,20 @@ RSpec.describe Order, type: :model do
 
   describe '#set_total!' do
     before(:each) do
+      product_1 = FactoryBot.create :product, price: 100
+      product_2 = FactoryBot.create :product, price: 85
+
+      placement_1 = FactoryBot.build :placement, product: product_1, quantity: 3
+      placement_2 = FactoryBot.build :placement, product: product_2, quantity: 15
+
       @order = FactoryBot.build :order
-      @order.products << FactoryBot.create(:product, price: 100)
-      @order.products << FactoryBot.create(:product, price: 85)
+
+      @order.placements << placement_1
+      @order.placements << placement_2
     end
 
     it 'returns the total amount to pay for the products' do
-      expect { @order.set_total! }.to change { @order.total }.from(0).to(185)
+      expect { @order.set_total! }.to change { @order.total.to_f }.from(0).to(1575)
     end
   end
 
