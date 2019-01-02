@@ -3,7 +3,20 @@ class Api::V1::ProductsController < ApplicationController
   before_action :authenticate_with_token!, only: %i[create update destroy]
 
   def index
-    render json: Product.search(params)
+    products = Product.page(params[:page]).per(params[:per_page]).search(params)
+    render(
+      json: ['az'],
+      # json: products,
+      includes:
+      meta: {
+        pagination: {
+          test: 'hello',
+          per_page: params[:per_page],
+          total_pages: products.total_pages,
+          total_objects: products.total_count
+        }
+      }
+    )
   end
 
   def show
