@@ -18,7 +18,7 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
 
       it 'returns the user record corresponding to the given credentials' do
         @user.reload
-        expect(json_response[:auth_token]).to eql @user.auth_token
+        expect(json_response[:data][:attributes][:'auth-token']).to eql @user.auth_token
       end
 
       it { expect(response.response_code).to eq(200) }
@@ -39,8 +39,7 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
     end
   end
 
-  describe "DELETE #destroy" do
-
+  describe 'DELETE #destroy' do
     before(:each) do
       @user = FactoryBot.create :user
       sign_in @user
@@ -48,6 +47,5 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
     end
 
     it { expect(response.response_code).to eq(204) }
-
   end
 end

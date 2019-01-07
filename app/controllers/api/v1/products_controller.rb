@@ -3,11 +3,11 @@ class Api::V1::ProductsController < ApplicationController
   before_action :authenticate_with_token!, only: %i[create update destroy]
 
   def index
-    render json: Product.search(params)
+    render json: Product.search(params), include: [:user]
   end
 
   def show
-    render json: Product.find(params[:id])
+    render json: Product.find(params[:id]), include: [:user]
   end
 
   def create

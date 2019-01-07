@@ -1,5 +1,6 @@
 # app/serializers/product_serializer.rb
 class ProductSerializer < ActiveModel::Serializer
+  type :product
   attributes :id, :title, :price, :published
-  has_one :user
+  belongs_to :user
 end

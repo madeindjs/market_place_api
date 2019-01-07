@@ -11,7 +11,7 @@ RSpec.describe Api::V1::OrdersController, type: :controller do
     end
 
     it 'returns 4 order records from the user' do
-      expect(json_response).to have(4).items
+      expect(json_response[:data]).to have(4).items
     end
 
     it { expect(response.response_code).to eq(200) }
@@ -27,15 +27,15 @@ RSpec.describe Api::V1::OrdersController, type: :controller do
     end
 
     it 'returns the user order record matching the id' do
-      expect(json_response[:id]).to eql @order.id
+      expect(json_response[:data][:id].to_i).to eql @order.id
     end
 
     it 'includes the total for the order' do
-      expect(json_response[:total]).to eql @order.total.to_s
+      expect(json_response[:data][:attributes][:total]).to eql @order.total.to_s
     end
 
     it 'includes the products on the order' do
-      expect(json_response[:products]).to have(1).item
+      expect(json_response[:data][:relationships][:products][:data]).to have(1).item
     end
 
     it { expect(response.response_code).to eq(200) }
@@ -55,11 +55,11 @@ RSpec.describe Api::V1::OrdersController, type: :controller do
     end
 
     it 'returns the just user order record' do
-      expect(json_response[:id]).to be_present
+      expect(json_response[:data][:id]).to be_present
     end
 
     it 'embeds the two product objects related to the order' do
-      expect(json_response[:products].size).to eql 2
+      expect(json_response[:data][:relationships][:products][:data].size).to eql 2
     end
 
     it { expect(response.response_code).to eq(201) }

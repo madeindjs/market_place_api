@@ -12,14 +12,14 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
 
     it 'returns the information about a reporter on a hash' do
-      expect(json_response[:email]).to eql @user.email
+      expect(json_response[:data][:attributes][:email]).to eql @user.email
+    end
+
+    it 'has the product ids as an embeded object' do
+      expect(json_response[:data][:attributes][:'product-ids']).to eql []
     end
 
     it { expect(response.response_code).to eq(200) }
-
-    it 'has the product ids as an embeded object' do
-      expect(json_response[:product_ids]).to eql []
-    end
   end
 
   describe 'POST #create' do
@@ -30,8 +30,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       end
 
       it 'renders the json representation for the user record just created' do
-        user_response = json_response
-        expect(user_response[:email]).to eql @user_attributes[:email]
+        expect(json_response[:data][:attributes][:email]).to eql @user_attributes[:email]
       end
 
       it { expect(response.response_code).to eq(201) }
@@ -46,8 +45,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       end
 
       it 'renders an errors json' do
-        user_response = json_response
-        expect(user_response).to have_key(:errors)
+        expect(json_response).to have_key(:errors)
       end
 
       it 'renders the json errors on why the user could not be created' do
@@ -68,8 +66,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       end
 
       it 'renders the json representation for the updated user' do
-        user_response = json_response
-        expect(user_response[:email]).to eql 'newmail@example.com'
+        expect(json_response[:data][:attributes][:email]).to eql 'newmail@example.com'
       end
 
       it { expect(response.response_code).to eq(200) }
