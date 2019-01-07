@@ -56,9 +56,9 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
     it 'Have a meta pagination tag' do
       expect(json_response).to have_key(:meta)
       expect(json_response[:meta]).to have_key(:pagination)
-      expect(json_response[:meta][:pagination]).to have_key(:per_page)
-      expect(json_response[:meta][:pagination]).to have_key(:total_pages)
-      expect(json_response[:meta][:pagination]).to have_key(:total_objects)
+      expect(json_response[:meta][:pagination]).to have_key(:'per-page')
+      expect(json_response[:meta][:pagination]).to have_key(:'total-pages')
+      expect(json_response[:meta][:pagination]).to have_key(:'total-objects')
     end
 
     it { expect(response.response_code).to eq(200) }
