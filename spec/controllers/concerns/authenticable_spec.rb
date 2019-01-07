@@ -1,7 +1,7 @@
 # spec/controllers/concerns/authenticable_spec.rb
 require 'rails_helper'
 
-class Authentication < ActionController::Base
+class Authentication < ActionController::API
   include Authenticable
 end
 

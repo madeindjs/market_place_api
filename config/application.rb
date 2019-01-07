@@ -32,6 +32,8 @@ module MarketPlaceApi
       g.helper = false
     end
 
+    config.api_only = true
+
     config.autoload_paths += %W[\#{config.root}/lib]
 
     # Don't generate system test files.
