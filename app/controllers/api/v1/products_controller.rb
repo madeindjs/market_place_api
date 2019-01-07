@@ -7,13 +7,7 @@ class Api::V1::ProductsController < ApplicationController
     render(
       json: products,
       include: [:user],
-      meta: {
-        pagination: {
-          per_page: params[:per_page],
-          total_pages: products.total_pages,
-          total_objects: products.total_count
-        }
-      }
+      meta: pagination(products)
     )
   end
 
